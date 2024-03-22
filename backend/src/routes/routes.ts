@@ -4,11 +4,16 @@ import { registerUser,loginUser } from "../controllers/usersController";
 import {getLicenciaturas, addLicenciatura} from "../controllers/licenciaturaController";
 
 
+interface login {
+    NMecanografico: string;
+    password: string;
+}
+
 export async function routes(app: FastifyInstance, options: FastifyPluginOptions) {
 
     //user routes
     app.post('/login', async (request: FastifyRequest, reply: FastifyReply) => {
-        const user = (request.body as any).user;
+        const user = (request.body as login);
         const result = await loginUser(user.NMecanografico, user.password);
         reply.send(result);
     });
