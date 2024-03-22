@@ -18,7 +18,7 @@ O projeto visa oferecer diversas funcionalidades úteis para os alunos, incluind
 
 - **Horários**: Apresentar os horários das aulas de forma organizada e acessível para todos os alunos.
 
-- **eventos sociais**: Informar os alunos sobre eventos sociais relacionados à vida acadêmica.
+- **Eventos Sociais**: Informar os alunos sobre eventos sociais relacionados à vida acadêmica.
 
 
 
