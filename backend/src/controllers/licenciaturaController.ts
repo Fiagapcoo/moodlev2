@@ -7,8 +7,8 @@ async function getLicenciaturas() {
 
 }
 
-async function addLicenciatura(nome: string) {
-    const [rows, fields] = await pool.query('INSERT INTO licenciatura (ID_licenciatura, Nome_licenciatura, Ano_letivo) VALUES (NULL, ?, "24/25")', [nome]);
+async function addLicenciatura(nome: string, enabled: string) {
+    const [rows, fields] = await pool.query('INSERT INTO licenciatura (ID_licenciatura, Nome_licenciatura, Enabled) VALUES (NULL, ?, ?)', [nome, enabled]);
     return rows;
 }
 
