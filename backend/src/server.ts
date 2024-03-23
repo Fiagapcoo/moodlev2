@@ -1,11 +1,13 @@
 import Fastify from 'fastify'
 import cors from '@fastify/cors'
-import {routes} from './routes/routes'
+import { userRoutes } from './routes/userRoutes';
+import { licenciaturaRoutes } from './routes/licenciaturaRoutes';
 const app = Fastify({logger: false});
 
 const start = async () => {
     await app.register(cors);
-    app.register(routes);
+    app.register(licenciaturaRoutes, {prefix: '/licenciatura'});
+    app.register(userRoutes, {prefix: '/user'});
 
 
 
