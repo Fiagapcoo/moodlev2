@@ -18,3 +18,9 @@ interface Licenciatura{
     Nome_licenciatura: string,
     Enabled: string
 }
+
+interface Disciplina{
+    NomeDisciplina: string,
+    Docentes: string,
+    Licenciatura: number
+}

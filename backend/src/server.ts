@@ -4,7 +4,7 @@ import cors from '@fastify/cors'
 import { userRoutes } from './routes/userRoutes';
 import { licenciaturaRoutes } from './routes/licenciaturaRoutes';
 import { anoLetivoRoutes } from './routes/anoLetivoRoutes';
-
+import { disciplinaRoutes } from './routes/disciplinaRoutes';
 
 
 
@@ -15,6 +15,7 @@ const start = async () => {
     app.register(licenciaturaRoutes, {prefix: '/licenciatura'});
     app.register(userRoutes, {prefix: '/user'});
     app.register(anoLetivoRoutes, {prefix: '/anoletivo'});
+    app.register(disciplinaRoutes, {prefix: '/disciplina'});
 
 
 
