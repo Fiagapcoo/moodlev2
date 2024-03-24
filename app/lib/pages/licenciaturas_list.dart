@@ -13,6 +13,7 @@ class LicenciaturasList extends StatefulWidget {
 
 class _LicenciaturasListState extends State<LicenciaturasList> {
   List<String> licenciaturas = [];
+  List<String> disciplinasID = [];
 
   @override
   void initState() {
@@ -22,11 +23,12 @@ class _LicenciaturasListState extends State<LicenciaturasList> {
 
   Future<void> fetchLicenciaturas() async {
     try {
-      final response = await http.get(Uri.parse('https://04b6-2001-818-ea57-fa00-4bc8-ec8e-70bc-72b5.ngrok-free.app/licenciatura/getlicenciaturas'));
+      final response = await http.get(Uri.parse('https://3b4a-2001-818-ea57-fa00-e7ec-45b7-381e-fc40.ngrok-free.app/licenciatura/getlicenciaturas'));
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
         setState(() {
           licenciaturas = data.map((entry) => entry['Nome_licenciatura'].toString()).toList();
+          disciplinasID = data.map((entry) => entry['ID_licenciatura'].toString()).toList();
         });
       } else {
         throw Exception('Failed to load licenciaturas');
@@ -53,7 +55,7 @@ class _LicenciaturasListState extends State<LicenciaturasList> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => DisciplinasFromLicenciatura(licenciaturaId: index),
+                          builder: (context) => DisciplinasFromLicenciatura(licenciaturaId: int.parse(disciplinasID[index]), licenciaturaName: licenciaturas[index]),
                         ),
                       );
                       print('Tapped ${licenciaturas[index]}');

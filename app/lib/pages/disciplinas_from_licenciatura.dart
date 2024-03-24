@@ -1,11 +1,14 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class DisciplinasFromLicenciatura extends StatefulWidget {
   final int licenciaturaId;
+  final String licenciaturaName;
 
-  const DisciplinasFromLicenciatura({Key? key, required this.licenciaturaId}) : super(key: key);
+  const DisciplinasFromLicenciatura({super.key, required this.licenciaturaId, required this.licenciaturaName});
 
   @override
   _DisciplinasFromLicenciaturaState createState() => _DisciplinasFromLicenciaturaState();
@@ -13,6 +16,7 @@ class DisciplinasFromLicenciatura extends StatefulWidget {
 
 class _DisciplinasFromLicenciaturaState extends State<DisciplinasFromLicenciatura> {
   List<String> disciplinas = [];
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -22,11 +26,12 @@ class _DisciplinasFromLicenciaturaState extends State<DisciplinasFromLicenciatur
 
   Future<void> fetchDisciplinas() async {
     try {
-      final response = await http.get(Uri.parse('https://04b6-2001-818-ea57-fa00-4bc8-ec8e-70bc-72b5.ngrok-free.app/disciplina/getdisciplinas'));
+      final response = await http.get(Uri.parse('https://3b4a-2001-818-ea57-fa00-e7ec-45b7-381e-fc40.ngrok-free.app/disciplina/getdisciplinafromlicenciatura?licenciatura=${widget.licenciaturaId}'));
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
         setState(() {
           disciplinas = data.map((entry) => entry['Nome_disciplina'].toString()).toList();
+          isLoading = false;
         });
       } else {
         throw Exception('Failed to load disciplinas');
@@ -40,19 +45,21 @@ class _DisciplinasFromLicenciaturaState extends State<DisciplinasFromLicenciatur
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Disciplinas from Licenciatura ${widget.licenciaturaId}'),
+        title: Text(widget.licenciaturaName),
       ),
       body: Center(
-        child: disciplinas.isEmpty
-            ? CircularProgressIndicator()
-            : ListView.builder(
-                itemCount: disciplinas.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(disciplinas[index]),
-                  );
-                },
-              ),
+        child: isLoading
+            ? const CircularProgressIndicator()
+            : disciplinas.isEmpty
+                ? const Text('Ainda não existem disciplinas associadas a esta licenciatura.')
+                : ListView.builder(
+                    itemCount: disciplinas.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(disciplinas[index]),
+                      );
+                    },
+                  ),
       ),
     );
   }

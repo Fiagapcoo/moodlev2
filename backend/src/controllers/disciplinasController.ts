@@ -11,6 +11,15 @@ async function getDisciplinas() {
     }
 }
 
+async function getDisciplinasFromLicenciatura(Licenciatura: number) {
+    try{
+        const [rows] = await pool.query('SELECT * FROM disciplinas WHERE Licenciatura = ?;', [Licenciatura]);
+        return rows;
+    }catch(error){
+        throw error;
+    }
+}
+
 
 async function addDisciplina(Disciplina: string, Docentes: string, Licenciatura: number) {
     try {
@@ -26,4 +35,4 @@ async function addDisciplina(Disciplina: string, Docentes: string, Licenciatura:
 }
 
 
-export { getDisciplinas, addDisciplina };
+export { getDisciplinas, addDisciplina, getDisciplinasFromLicenciatura };

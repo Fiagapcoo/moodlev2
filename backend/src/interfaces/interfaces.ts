@@ -24,3 +24,10 @@ interface Disciplina{
     Docentes: string,
     Licenciatura: number
 }
+
+
+interface Assignment{
+    Nome_assignment: string,
+    Disciplina: number,
+    DueDate: string
+}

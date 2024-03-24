@@ -5,6 +5,7 @@ import { userRoutes } from './routes/userRoutes';
 import { licenciaturaRoutes } from './routes/licenciaturaRoutes';
 import { anoLetivoRoutes } from './routes/anoLetivoRoutes';
 import { disciplinaRoutes } from './routes/disciplinaRoutes';
+import { assignmentsRoutes } from './routes/assignmentsRoutes';
 
 
 
@@ -16,6 +17,7 @@ const start = async () => {
     app.register(userRoutes, {prefix: '/user'});
     app.register(anoLetivoRoutes, {prefix: '/anoletivo'});
     app.register(disciplinaRoutes, {prefix: '/disciplina'});
+    app.register(assignmentsRoutes, {prefix: '/assignments'});
 
 
 
