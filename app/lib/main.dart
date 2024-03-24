@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-void main() {
-  runApp(MyApp());
+import 'pages/licenciaturas_list.dart';
+
+Future<void> main() async {
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Login Page',
       home: LoginPage(),
     );
@@ -19,16 +21,15 @@ class MyApp extends StatelessWidget {
 }
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  String _email = '';
+  String _nMecanografico = '';
   String _password = '';
 
   @override
@@ -45,15 +46,15 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               TextFormField(
                 decoration: const InputDecoration(
-                  labelText: 'Email',
+                  labelText: 'Número Mecanográfico',
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter your email';
+                    return 'Please enter your Número Mecanográfico';
                   }
                   return null;
                 },
-                onChanged: (value) => _email = value,
+                onChanged: (value) => _nMecanografico = value,
               ),
               const SizedBox(height: 16.0),
               TextFormField(
@@ -74,19 +75,62 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     // Perform login logic here
-                    print('Email: $_email, Password: $_password');
+                    print("aa $_nMecanografico e bb $_password");
                     http.Client()
                         .post(
                       Uri.parse(
-                          'https://855a-2001-818-ea57-fa00-334e-9c37-9503-fcb5.ngrok-free.app/login'),
+                          'https://04b6-2001-818-ea57-fa00-4bc8-ec8e-70bc-72b5.ngrok-free.app/user/login'),
                       headers: {'Content-Type': 'application/json'},
                       body: jsonEncode({
-                        'Nmecanografico': _email,
+                        'NMecanografico': _nMecanografico,
                         'password': _password,
                       }),
                     )
                         .then((response) {
                       print(response.body);
+                      if (response.body.contains('true')) {
+                        // Login successful
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Login Successful'),
+                              content: const Text(
+                                  'You have logged in successfully.'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              LicenciaturasList()),
+                                    );
+                                  },
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      } else {
+                        // Login failed
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Login Failed'),
+                              content: const Text('Invalid email or password.'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
                     });
                   }
                 },
