@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'assignments_from_disciplinas.dart';
 
 class DisciplinasFromLicenciatura extends StatefulWidget {
   final int licenciaturaId;
@@ -26,7 +27,7 @@ class _DisciplinasFromLicenciaturaState extends State<DisciplinasFromLicenciatur
 
   Future<void> fetchDisciplinas() async {
     try {
-      final response = await http.get(Uri.parse('https://3b4a-2001-818-ea57-fa00-e7ec-45b7-381e-fc40.ngrok-free.app/disciplina/getdisciplinafromlicenciatura?licenciatura=${widget.licenciaturaId}'));
+      final response = await http.get(Uri.parse('https://4844-2001-818-ea57-fa00-ebba-b8f9-4987-8316.ngrok-free.app/disciplina/getdisciplinafromlicenciatura?licenciatura=${widget.licenciaturaId}'));
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
         setState(() {
@@ -57,6 +58,17 @@ class _DisciplinasFromLicenciaturaState extends State<DisciplinasFromLicenciatur
                     itemBuilder: (context, index) {
                       return ListTile(
                         title: Text(disciplinas[index]),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AssignmentsFromDisciplinas(
+                                disciplinaId: index + 1,
+                                disciplinaName: disciplinas[index],
+                              ),
+                            ),
+                          );
+                        }
                       );
                     },
                   ),
